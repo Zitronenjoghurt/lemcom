@@ -1,7 +1,9 @@
 pub mod app;
 pub mod screens {
+    pub mod chat;
     pub mod home;
     pub mod screen_manager;
+    pub mod settings;
 }
 
 fn main() {

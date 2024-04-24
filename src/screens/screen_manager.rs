@@ -1,14 +1,17 @@
 use crate::screens::home::HomeScreen;
 use std::collections::HashMap;
 
+use super::{chat::ChatScreen, settings::SettingsScreen};
+
 pub trait Screen {
-    fn update(&mut self, screen_manager: &mut ScreenId, ui: &mut egui::Ui);
+    fn update(&mut self, ui: &mut egui::Ui) -> Option<ScreenId>;
 }
 
 #[derive(Eq, PartialEq, Hash)]
 pub enum ScreenId {
     Chat,
     Home,
+    Settings,
 }
 
 pub struct ScreenManager {
@@ -25,7 +28,9 @@ impl ScreenManager {
 
     pub fn update_current_screen(&mut self, ui: &mut egui::Ui) {
         if let Some(screen) = self.screens.get_mut(&self.current_screen_id) {
-            screen.update(&mut self.current_screen_id, ui);
+            if let Some(new_screen_id) = screen.update(ui) {
+                self.switch_screen(new_screen_id);
+            }
         }
     }
 }
@@ -34,6 +39,11 @@ impl Default for ScreenManager {
     fn default() -> Self {
         let mut screens = HashMap::new();
         screens.insert(ScreenId::Home, Box::new(HomeScreen {}) as Box<dyn Screen>);
+        screens.insert(ScreenId::Chat, Box::new(ChatScreen {}) as Box<dyn Screen>);
+        screens.insert(
+            ScreenId::Settings,
+            Box::new(SettingsScreen {}) as Box<dyn Screen>,
+        );
 
         Self {
             screens,
