@@ -1,11 +1,11 @@
-use crate::screens::screen_manager::Screen;
-
 use super::screen_manager::ScreenId;
+use crate::{screens::screen_manager::Screen, store::Store};
+use egui::mutex::RwLock;
 
 pub struct HomeScreen {}
 
 impl Screen for HomeScreen {
-    fn update(&mut self, ui: &mut egui::Ui) -> Option<ScreenId> {
+    fn update(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) -> Option<ScreenId> {
         let mut style = (*ui.ctx().style()).clone();
         let mut redirect_screen: Option<ScreenId> = None;
 
@@ -31,6 +31,11 @@ impl Screen for HomeScreen {
                 .add_sized([120., 40.], egui::Button::new("Chat"))
                 .clicked()
             {
+                let mut store = store.write();
+                store.api_key = "test".to_string();
+                if let Err(e) = store.save() {
+                    eprintln!("Failed to save store: {}", e);
+                }
                 redirect_screen = Some(ScreenId::Chat);
             }
 

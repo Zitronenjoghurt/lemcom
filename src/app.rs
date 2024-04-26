@@ -21,14 +21,7 @@ impl LemComApp {
 impl eframe::App for LemComApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            self.screen_manager.update_current_screen(ui);
+            self.screen_manager.update_current_screen(ui, &self.store);
         });
-
-        let mut store = self.store.write();
-        store.api_key = "test".to_string();
-
-        if let Err(e) = store.save() {
-            eprintln!("Failed to save store: {}", e);
-        }
     }
 }

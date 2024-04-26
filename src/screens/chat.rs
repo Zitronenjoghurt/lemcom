@@ -1,10 +1,11 @@
 use super::screen_manager::ScreenId;
-use crate::screens::screen_manager::Screen;
+use crate::{screens::screen_manager::Screen, store::Store};
+use egui::mutex::RwLock;
 
 pub struct ChatScreen {}
 
 impl Screen for ChatScreen {
-    fn update(&mut self, ui: &mut egui::Ui) -> Option<ScreenId> {
+    fn update(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) -> Option<ScreenId> {
         let mut style = (*ui.ctx().style()).clone();
         let mut redirect_screen: Option<ScreenId> = None;
 
