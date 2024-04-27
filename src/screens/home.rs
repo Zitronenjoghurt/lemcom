@@ -31,11 +31,6 @@ impl Screen for HomeScreen {
                 .add_sized([120., 40.], egui::Button::new("Chat"))
                 .clicked()
             {
-                let mut store = store.write();
-                store.api_key = "test".to_string();
-                if let Err(e) = store.save() {
-                    eprintln!("Failed to save store: {}", e);
-                }
                 redirect_screen = Some(ScreenId::Chat);
             }
 
@@ -48,6 +43,22 @@ impl Screen for HomeScreen {
                 redirect_screen = Some(ScreenId::Settings);
             }
         });
+
+        let store_read = store.read();
+        let mut show_api_key_popup = store_read.api_key_available();
+        let mut api_key_input: String = String::new();
+
+        if show_api_key_popup {
+            egui::Window::new("API Key not set")
+                .open(&mut show_api_key_popup)
+                .show(ctx, |ui| {
+                    ui.label("Enter your API Key:");
+                    ui.text_edit_singleline(&mut api_key_input);
+                    if ui.button("Submit").clicked() {
+                        show_api_key_popup = false;
+                    }
+                });
+        }
 
         redirect_screen
     }

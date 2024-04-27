@@ -44,4 +44,8 @@ impl Store {
         file.write_all(contents.as_bytes())?;
         Ok(())
     }
+
+    pub fn api_key_available(&self) -> bool {
+        return self.api_key.len() > 0;
+    }
 }
