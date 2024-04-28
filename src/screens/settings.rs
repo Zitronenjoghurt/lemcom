@@ -5,7 +5,12 @@ use egui::mutex::RwLock;
 pub struct SettingsScreen {}
 
 impl Screen for SettingsScreen {
-    fn update(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) -> Option<ScreenId> {
+    fn update(
+        &mut self,
+        ctx: &egui::Context,
+        ui: &mut egui::Ui,
+        store: &RwLock<Store>,
+    ) -> Option<ScreenId> {
         let mut style = (*ui.ctx().style()).clone();
         let mut redirect_screen: Option<ScreenId> = None;
 

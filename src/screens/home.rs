@@ -5,7 +5,12 @@ use egui::mutex::RwLock;
 pub struct HomeScreen {}
 
 impl Screen for HomeScreen {
-    fn update(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) -> Option<ScreenId> {
+    fn update(
+        &mut self,
+        ctx: &egui::Context,
+        ui: &mut egui::Ui,
+        store: &RwLock<Store>,
+    ) -> Option<ScreenId> {
         let mut style = (*ui.ctx().style()).clone();
         let mut redirect_screen: Option<ScreenId> = None;
 
@@ -54,9 +59,6 @@ impl Screen for HomeScreen {
                 .show(ctx, |ui| {
                     ui.label("Enter your API Key:");
                     ui.text_edit_singleline(&mut api_key_input);
-                    if ui.button("Submit").clicked() {
-                        show_api_key_popup = false;
-                    }
                 });
         }
 

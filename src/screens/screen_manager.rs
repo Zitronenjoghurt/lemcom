@@ -5,7 +5,12 @@ use std::collections::HashMap;
 use super::{chat::ChatScreen, settings::SettingsScreen};
 
 pub trait Screen {
-    fn update(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) -> Option<ScreenId>;
+    fn update(
+        &mut self,
+        ctx: &egui::Context,
+        ui: &mut egui::Ui,
+        store: &RwLock<Store>,
+    ) -> Option<ScreenId>;
 }
 
 #[derive(Eq, PartialEq, Hash)]
@@ -27,9 +32,14 @@ impl ScreenManager {
         }
     }
 
-    pub fn update_current_screen(&mut self, ui: &mut egui::Ui, store: &RwLock<Store>) {
+    pub fn update_current_screen(
+        &mut self,
+        ctx: &egui::Context,
+        ui: &mut egui::Ui,
+        store: &RwLock<Store>,
+    ) {
         if let Some(screen) = self.screens.get_mut(&self.current_screen_id) {
-            if let Some(new_screen_id) = screen.update(ui, store) {
+            if let Some(new_screen_id) = screen.update(ctx, ui, store) {
                 self.switch_screen(new_screen_id);
             }
         }

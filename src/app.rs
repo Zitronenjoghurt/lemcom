@@ -21,7 +21,8 @@ impl LemComApp {
 impl eframe::App for LemComApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
-            self.screen_manager.update_current_screen(ui, &self.store);
+            self.screen_manager
+                .update_current_screen(ctx, ui, &self.store);
         });
     }
 }
